@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>NASA Jigsaw</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <a class="back-link" href="../../index.html">&larr; Back to Arcade</a>
+
+  <h1>NASA Jigsaw</h1>
+  <p class="instructions">Drag pieces into place to reassemble the image.</p>
+
+  <div class="controls">
+    <div class="picker" id="image-picker">
+      <button class="thumb-btn" data-image="eagle-nebula" style="background-image:url('images/eagle-nebula.jpg')" title="Eagle Nebula"></button>
+      <button class="thumb-btn" data-image="saturn-rings" style="background-image:url('images/saturn-rings.jpg')" title="Saturn's Rings"></button>
+      <button class="thumb-btn" data-image="earthrise" style="background-image:url('images/earthrise.jpg')" title="Earthrise"></button>
+      <button class="thumb-btn" data-image="saturn-2025" style="background-image:url('images/saturn-2025.jpg')" title="Saturn"></button>
+      <button class="thumb-btn" data-image="active-spiral" style="background-image:url('images/active-spiral.jpg')" title="Hubble Spies an Active Spiral"></button>
+      <button class="thumb-btn" data-image="messier-58" style="background-image:url('images/messier-58.jpg')" title="Messier 58"></button>
+      <button class="thumb-btn" data-image="orion-stars" style="background-image:url('images/orion-stars.jpg')" title="Hubble Observes Stars Flaring to Life in Orion"></button>
+      <button class="thumb-btn" data-image="massive-stars" style="background-image:url('images/massive-stars.jpg')" title="Massive Stars Make Their Mark in Hubble Image"></button>
+    </div>
+    <div class="picker" id="difficulty-picker">
+      <button class="diff-btn" data-size="3">Easy (3&times;3)</button>
+      <button class="diff-btn" data-size="4">Medium (4&times;4)</button>
+      <button class="diff-btn" data-size="5">Hard (5&times;5)</button>
+    </div>
+  </div>
+
+  <div class="hud">
+    <span>Moves: <span id="moves">0</span></span>
+    <span>Time: <span id="time">0:00</span></span>
+  </div>
+
+  <div id="board" class="board"></div>
+
+  <div id="win-message" hidden>
+    <h2>Solved!</h2>
+    <p>Moves: <span id="final-moves"></span> &middot; Time: <span id="final-time"></span></p>
+    <button id="play-again">New Puzzle</button>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
