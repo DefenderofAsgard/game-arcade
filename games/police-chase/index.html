@@ -10,11 +10,12 @@
   <a class="back-link" href="../../index.html">&larr; Back to Arcade</a>
 
   <h1>Cop Chase</h1>
-  <p class="instructions">Arrow Keys: Up/Down = Accelerate/Reverse &nbsp;|&nbsp; Left/Right = Steer</p>
+  <p class="instructions">Up = Accelerate &nbsp;|&nbsp; Space = Brake &nbsp;|&nbsp; Left/Right = Steer</p>
 
   <div class="hud">
     <span>Time: <span id="time">0:00</span></span>
     <span>Coins: <span id="coins">0</span></span>
+    <span>Score: <span id="score">0</span></span>
     <span>Wanted:</span>
     <div class="wanted-bar"><div id="wanted-fill" class="wanted-fill"></div></div>
   </div>
@@ -25,9 +26,26 @@
     <h2>Busted!</h2>
     <p>Time Survived: <span id="final-time">0:00</span></p>
     <p>Coins Collected: <span id="final-coins">0</span></p>
+    <p>Final Score: <span id="final-score">0</span></p>
+
+    <div id="name-entry" hidden>
+      <p>New top 3 score! Enter your name:</p>
+      <input id="player-name" maxlength="20" placeholder="Your name">
+      <button id="submit-score">Submit</button>
+    </div>
+
     <button id="restart">Try Again</button>
   </div>
 
+  <div id="leaderboard">
+    <h2>Top Scores</h2>
+    <ol id="leaderboard-list"></ol>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="leaderboard.js"></script>
   <script src="game.js"></script>
 </body>
 </html>

@@ -44,6 +44,12 @@ h1 {
   font-weight: bold;
 }
 
+#coins,
+#score {
+  color: #ffe28a;
+  font-weight: bold;
+}
+
 .wanted-bar {
   width: 140px;
   height: 16px;
@@ -95,4 +101,66 @@ canvas {
 
 #restart:hover {
   background-color: #235a92;
+}
+
+#name-entry {
+  margin-bottom: 16px;
+}
+
+#name-entry p {
+  color: #8ecbff;
+  font-weight: bold;
+}
+
+#player-name {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #555;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #222;
+  margin-right: 8px;
+}
+
+#submit-score {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 5px;
+  background-color: #2b6cb0;
+  color: #fff;
+  cursor: pointer;
+}
+
+#submit-score:hover {
+  background-color: #235a92;
+}
+
+#submit-score:disabled {
+  background-color: #555;
+  cursor: not-allowed;
+}
+
+#leaderboard {
+  margin-top: 20px;
+  background-color: rgba(255, 255, 255, 0.06);
+  border: 1px solid #333;
+  border-radius: 10px;
+  padding: 20px;
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#leaderboard h2 {
+  color: #ffe28a;
+  margin-top: 0;
+}
+
+#leaderboard-list {
+  list-style-position: inside;
+  padding: 0;
+  text-align: left;
+}
+
+#leaderboard-list li {
+  padding: 4px 0;
 }

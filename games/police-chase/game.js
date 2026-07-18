@@ -5,41 +5,62 @@ const H = canvas.height;
 
 const timeEl = document.getElementById("time");
 const coinsEl = document.getElementById("coins");
+const scoreEl = document.getElementById("score");
 const wantedFillEl = document.getElementById("wanted-fill");
 const gameOverEl = document.getElementById("game-over");
 const finalTimeEl = document.getElementById("final-time");
 const finalCoinsEl = document.getElementById("final-coins");
+const finalScoreEl = document.getElementById("final-score");
 const restartBtn = document.getElementById("restart");
+const nameEntryEl = document.getElementById("name-entry");
+const playerNameInput = document.getElementById("player-name");
+const submitScoreBtn = document.getElementById("submit-score");
 
 const GRID_MARGIN = 35;
-const BUILDING_W = 85;
-const BUILDING_H = 90;
+const BLOCK_W = 85;
+const BLOCK_H = 90;
 const ROAD_WIDTH = 80;
 const GRID_COLS = 4;
 const GRID_ROWS = 2;
-const ROOF_COLORS = ["#3a3a3a", "#44403a", "#3a4044", "#403a3a", "#3d3d3d"];
 
-const BUILDINGS = [];
+function blockLeft(col) { return GRID_MARGIN + col * (BLOCK_W + ROAD_WIDTH); }
+function blockTop(row) { return GRID_MARGIN + row * (BLOCK_H + ROAD_WIDTH); }
+
+const BLOCKS = [];
 for (let row = 0; row < GRID_ROWS; row++) {
   for (let col = 0; col < GRID_COLS; col++) {
-    const x = GRID_MARGIN + col * (BUILDING_W + ROAD_WIDTH);
-    const y = GRID_MARGIN + row * (BUILDING_H + ROAD_WIDTH);
-    const seed = row * GRID_COLS + col;
-    BUILDINGS.push({
-      x,
-      y,
-      w: BUILDING_W,
-      h: BUILDING_H,
-      color: ROOF_COLORS[seed % ROOF_COLORS.length],
-      vents: [
-        { x: 12 + (seed * 13) % (BUILDING_W - 30), y: 14 + (seed * 7) % (BUILDING_H - 40), w: 10, h: 8 },
-        { x: 20 + (seed * 19) % (BUILDING_W - 34), y: BUILDING_H - 26 - (seed * 5) % 15, w: 8, h: 8 },
-      ],
+    BLOCKS.push({ x: blockLeft(col), y: blockTop(row), w: BLOCK_W, h: BLOCK_H });
+  }
+}
+
+// Center-line x positions of every vertical street (margins + gaps between block columns).
+const V_STREETS = [GRID_MARGIN / 2];
+for (let col = 0; col < GRID_COLS - 1; col++) {
+  V_STREETS.push((blockLeft(col) + BLOCK_W + blockLeft(col + 1)) / 2);
+}
+V_STREETS.push((blockLeft(GRID_COLS - 1) + BLOCK_W + W) / 2);
+
+// Center-line y positions of every horizontal street (margins + gaps between block rows).
+const H_STREETS = [GRID_MARGIN / 2];
+for (let row = 0; row < GRID_ROWS - 1; row++) {
+  H_STREETS.push((blockTop(row) + BLOCK_H + blockTop(row + 1)) / 2);
+}
+H_STREETS.push((blockTop(GRID_ROWS - 1) + BLOCK_H + H) / 2);
+
+// Every street crossing gets a control device, alternating logically by grid position
+// (checkerboard: lights on evens, stop signs on odds) rather than randomly.
+const INTERSECTIONS = [];
+for (let r = 0; r < H_STREETS.length; r++) {
+  for (let c = 0; c < V_STREETS.length; c++) {
+    INTERSECTIONS.push({
+      x: V_STREETS[c],
+      y: H_STREETS[r],
+      type: (r + c) % 2 === 0 ? "light" : "stop",
     });
   }
 }
 
-// Safe spawn point: the open margin road that rings the whole building grid.
+// Safe spawn point: the open margin road that rings the whole block grid.
 const SPAWN_X = GRID_MARGIN / 2;
 const SPAWN_Y = H / 2;
 
@@ -65,7 +86,7 @@ function randomRoadPoint() {
   do {
     x = 20 + Math.random() * (W - 40);
     y = 20 + Math.random() * (H - 40);
-  } while (circleHitsBuilding(x, y, COIN_RADIUS + 6));
+  } while (circleHitsBlock(x, y, COIN_RADIUS + 6));
   return { x, y };
 }
 
@@ -76,19 +97,21 @@ function spawnCoin() {
 
 const keys = {};
 window.addEventListener("keydown", (e) => {
+  if (e.target.tagName === "INPUT") return;
   keys[e.key] = true;
-  if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.key)) {
+  if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", " "].includes(e.key)) {
     e.preventDefault();
   }
 });
 window.addEventListener("keyup", (e) => {
+  if (e.target.tagName === "INPUT") return;
   keys[e.key] = false;
 });
 
 let player, police, wanted, elapsed, gameRunning, policeSpawnTimer, coins, coinsCollected;
 
-function circleHitsBuilding(x, y, r) {
-  for (const b of BUILDINGS) {
+function circleHitsBlock(x, y, r) {
+  for (const b of BLOCKS) {
     const closestX = Math.max(b.x, Math.min(x, b.x + b.w));
     const closestY = Math.max(b.y, Math.min(y, b.y + b.h));
     if (Math.hypot(x - closestX, y - closestY) < r) return true;
@@ -117,15 +140,20 @@ function updateHud() {
   const s = Math.floor(elapsed % 60);
   timeEl.textContent = `${m}:${s.toString().padStart(2, "0")}`;
   coinsEl.textContent = coinsCollected;
+  scoreEl.textContent = coinsCollected;
   wantedFillEl.style.width = `${wanted}%`;
   wantedFillEl.style.backgroundColor = wanted > 60 ? "#ff3b3b" : wanted > 25 ? "#ff9d3b" : "#ffcc00";
 }
 
 function moveCar(car, accelInput, brakeInput, turnInput) {
-  if (accelInput) car.speed += ACCEL;
-  if (brakeInput) car.speed -= BRAKE;
-  car.speed *= FRICTION;
-  car.speed = Math.max(MAX_REVERSE, Math.min(MAX_SPEED, car.speed));
+  if (accelInput && brakeInput) {
+    car.speed = MAX_SPEED * 0.25;
+  } else {
+    if (accelInput) car.speed += ACCEL;
+    if (brakeInput) car.speed -= BRAKE;
+    car.speed *= FRICTION;
+    car.speed = Math.max(MAX_REVERSE, Math.min(MAX_SPEED, car.speed));
+  }
 
   if (Math.abs(car.speed) > 0.05) {
     const dir = car.speed > 0 ? 1 : -1;
@@ -135,17 +163,17 @@ function moveCar(car, accelInput, brakeInput, turnInput) {
   const nx = car.x + Math.cos(car.angle) * car.speed;
   const ny = car.y + Math.sin(car.angle) * car.speed;
 
-  if (!circleHitsBuilding(nx, car.y, CAR_RADIUS) && nx > CAR_RADIUS && nx < W - CAR_RADIUS) {
+  if (!circleHitsBlock(nx, car.y, CAR_RADIUS) && nx > CAR_RADIUS && nx < W - CAR_RADIUS) {
     car.x = nx;
   }
-  if (!circleHitsBuilding(car.x, ny, CAR_RADIUS) && ny > CAR_RADIUS && ny < H - CAR_RADIUS) {
+  if (!circleHitsBlock(car.x, ny, CAR_RADIUS) && ny > CAR_RADIUS && ny < H - CAR_RADIUS) {
     car.y = ny;
   }
 }
 
 function updatePlayer() {
   const accelInput = !!keys["ArrowUp"];
-  const brakeInput = !!keys["ArrowDown"];
+  const brakeInput = !!keys[" "];
   let turnInput = 0;
   if (keys["ArrowLeft"]) turnInput -= 1;
   if (keys["ArrowRight"]) turnInput += 1;
@@ -189,11 +217,11 @@ function updatePolice(cop) {
   const ny = cop.y + Math.sin(cop.angle) * speed;
 
   let moved = false;
-  if (!circleHitsBuilding(nx, cop.y, CAR_RADIUS) && nx > CAR_RADIUS && nx < W - CAR_RADIUS) {
+  if (!circleHitsBlock(nx, cop.y, CAR_RADIUS) && nx > CAR_RADIUS && nx < W - CAR_RADIUS) {
     cop.x = nx;
     moved = true;
   }
-  if (!circleHitsBuilding(cop.x, ny, CAR_RADIUS) && ny > CAR_RADIUS && ny < H - CAR_RADIUS) {
+  if (!circleHitsBlock(cop.x, ny, CAR_RADIUS) && ny > CAR_RADIUS && ny < H - CAR_RADIUS) {
     cop.y = ny;
     moved = true;
   }
@@ -248,7 +276,15 @@ function busted() {
   gameRunning = false;
   finalTimeEl.textContent = timeEl.textContent;
   finalCoinsEl.textContent = coinsCollected;
+  finalScoreEl.textContent = coinsCollected;
   gameOverEl.hidden = false;
+  if (window.Leaderboard && window.Leaderboard.qualifiesForTopThree(coinsCollected)) {
+    nameEntryEl.hidden = false;
+    playerNameInput.value = "";
+    submitScoreBtn.disabled = false;
+  } else {
+    nameEntryEl.hidden = true;
+  }
 }
 
 function drawPlayerCar(car) {
@@ -321,21 +357,104 @@ function drawPoliceCar(car, chasing) {
   ctx.restore();
 }
 
-function drawBuildings() {
-  for (const b of BUILDINGS) {
-    ctx.fillStyle = b.color;
+function drawBlocks() {
+  for (const b of BLOCKS) {
+    ctx.fillStyle = "#2d4a2d";
     ctx.fillRect(b.x, b.y, b.w, b.h);
-
-    ctx.strokeStyle = "rgba(0, 0, 0, 0.45)";
+    ctx.strokeStyle = "rgba(0, 0, 0, 0.4)";
     ctx.lineWidth = 2;
     ctx.strokeRect(b.x, b.y, b.w, b.h);
+  }
+}
 
-    ctx.fillStyle = "rgba(255, 255, 255, 0.05)";
-    ctx.fillRect(b.x + 6, b.y + 6, b.w - 12, b.h - 12);
+function drawStreetMarkings() {
+  const edgeInset = ROAD_WIDTH / 2 - 6;
+  const dash = [14, 12];
 
-    ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
-    for (const v of b.vents) {
-      ctx.fillRect(b.x + v.x, b.y + v.y, v.w, v.h);
+  ctx.strokeStyle = "#ddd";
+  ctx.lineWidth = 2;
+  for (const x of V_STREETS) {
+    ctx.beginPath();
+    ctx.moveTo(x - edgeInset, 0);
+    ctx.lineTo(x - edgeInset, H);
+    ctx.moveTo(x + edgeInset, 0);
+    ctx.lineTo(x + edgeInset, H);
+    ctx.stroke();
+  }
+  for (const y of H_STREETS) {
+    ctx.beginPath();
+    ctx.moveTo(0, y - edgeInset);
+    ctx.lineTo(W, y - edgeInset);
+    ctx.moveTo(0, y + edgeInset);
+    ctx.lineTo(W, y + edgeInset);
+    ctx.stroke();
+  }
+
+  ctx.strokeStyle = "#ffcc00";
+  ctx.lineWidth = 2;
+  ctx.setLineDash(dash);
+  for (const x of V_STREETS) {
+    ctx.beginPath();
+    ctx.moveTo(x, 0);
+    ctx.lineTo(x, H);
+    ctx.stroke();
+  }
+  for (const y of H_STREETS) {
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.lineTo(W, y);
+    ctx.stroke();
+  }
+  ctx.setLineDash([]);
+}
+
+function drawTrafficLight(x, y) {
+  ctx.fillStyle = "#222";
+  ctx.fillRect(x - 3, y - 11, 6, 22);
+  ctx.fillStyle = "#ff3b3b";
+  ctx.beginPath();
+  ctx.arc(x, y - 6, 2.5, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = "#ffcc00";
+  ctx.beginPath();
+  ctx.arc(x, y, 2.5, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = "#3bff5a";
+  ctx.beginPath();
+  ctx.arc(x, y + 6, 2.5, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+function drawStopSign(x, y) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.fillStyle = "#c0392b";
+  ctx.beginPath();
+  for (let i = 0; i < 8; i++) {
+    const a = Math.PI / 8 + (i * Math.PI) / 4;
+    const px = Math.cos(a) * 7;
+    const py = Math.sin(a) * 7;
+    if (i === 0) ctx.moveTo(px, py);
+    else ctx.lineTo(px, py);
+  }
+  ctx.closePath();
+  ctx.fill();
+  ctx.strokeStyle = "#fff";
+  ctx.lineWidth = 1;
+  ctx.stroke();
+  ctx.fillStyle = "#fff";
+  ctx.fillRect(-4, -1, 8, 2);
+  ctx.restore();
+}
+
+function drawIntersections() {
+  for (const i of INTERSECTIONS) {
+    const offsetX = i.x < W / 2 ? 12 : -12;
+    const offsetY = i.y < H / 2 ? 12 : -12;
+    if (i.type === "light") {
+      drawTrafficLight(i.x + offsetX, i.y + offsetY);
+    } else {
+      drawStopSign(i.x + offsetX, i.y + offsetY);
     }
   }
 }
@@ -359,7 +478,9 @@ function drawCoins() {
 function draw() {
   ctx.clearRect(0, 0, W, H);
 
-  drawBuildings();
+  drawStreetMarkings();
+  drawBlocks();
+  drawIntersections();
   drawCoins();
 
   for (const cop of police) {
@@ -375,7 +496,19 @@ function loop() {
   requestAnimationFrame(loop);
 }
 
-restartBtn.addEventListener("click", initGame);
+restartBtn.addEventListener("click", async () => {
+  if (!nameEntryEl.hidden) {
+    nameEntryEl.hidden = true;
+    await window.Leaderboard.submitScore("Unknown", coinsCollected);
+  }
+  initGame();
+});
+submitScoreBtn.addEventListener("click", async () => {
+  const name = playerNameInput.value.trim() || "Unknown";
+  submitScoreBtn.disabled = true;
+  await window.Leaderboard.submitScore(name, coinsCollected);
+  nameEntryEl.hidden = true;
+});
 
 initGame();
 loop();
