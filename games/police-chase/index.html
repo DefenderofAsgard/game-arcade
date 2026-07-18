@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Cop Chase</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <a class="back-link" href="../../index.html">&larr; Back to Arcade</a>
+
+  <h1>Cop Chase</h1>
+  <p class="instructions">Arrow Keys: Up/Down = Accelerate/Reverse &nbsp;|&nbsp; Left/Right = Steer</p>
+
+  <div class="hud">
+    <span>Time: <span id="time">0:00</span></span>
+    <span>Wanted:</span>
+    <div class="wanted-bar"><div id="wanted-fill" class="wanted-fill"></div></div>
+  </div>
+
+  <canvas id="game" width="800" height="500"></canvas>
+
+  <div id="game-over" hidden>
+    <h2>Busted!</h2>
+    <p>Time Survived: <span id="final-time">0:00</span></p>
+    <button id="restart">Try Again</button>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
