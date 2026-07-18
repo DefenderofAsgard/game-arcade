@@ -158,6 +158,7 @@ function attack() {
 const SCROLL_KEYS = ["arrowup", "arrowdown", "arrowleft", "arrowright", " "];
 
 window.addEventListener("keydown", (e) => {
+  if (e.target.tagName === "INPUT") return;
   keys[e.key.toLowerCase()] = true;
   if (SCROLL_KEYS.includes(e.key.toLowerCase())) {
     e.preventDefault();
@@ -167,6 +168,7 @@ window.addEventListener("keydown", (e) => {
   }
 });
 window.addEventListener("keyup", (e) => {
+  if (e.target.tagName === "INPUT") return;
   keys[e.key.toLowerCase()] = false;
   if (e.key === " ") {
     player.spinning = false;
