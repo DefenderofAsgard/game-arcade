@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Stick Duel</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <a class="back-link" href="../../index.html">&larr; Back to Arcade</a>
+
+  <h1>Stick Duel</h1>
+  <p class="instructions">Move: WASD / Arrow Keys &nbsp;|&nbsp; Attack: Space or Click</p>
+
+  <div class="hud">
+    <span>Health: <span id="health">100</span></span>
+    <span>Score: <span id="score">0</span></span>
+    <span>Wave: <span id="wave">1</span></span>
+  </div>
+
+  <canvas id="game" width="800" height="500"></canvas>
+
+  <div id="game-over" hidden>
+    <h2>You Died</h2>
+    <p>Final Score: <span id="final-score">0</span></p>
+
+    <div id="name-entry" hidden>
+      <p>New top 3 score! Enter your name:</p>
+      <input id="player-name" maxlength="20" placeholder="Your name">
+      <button id="submit-score">Submit</button>
+    </div>
+
+    <button id="restart">Play Again</button>
+  </div>
+
+  <div id="leaderboard">
+    <h2>Top Scores</h2>
+    <ol id="leaderboard-list"></ol>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="leaderboard.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
