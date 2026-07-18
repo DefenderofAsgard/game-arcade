@@ -1,4 +1,4 @@
-const LEADERBOARD_DOC = db.collection("leaderboard").doc("copChaseTopScores");
+const LEADERBOARD_DOC = db.collection("leaderboard").doc("topScores");
 const leaderboardListEl = document.getElementById("leaderboard-list");
 
 let topScores = [];
