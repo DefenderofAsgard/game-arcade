@@ -4,17 +4,19 @@ const W = canvas.width;
 const H = canvas.height;
 
 const timeEl = document.getElementById("time");
+const coinsEl = document.getElementById("coins");
 const wantedFillEl = document.getElementById("wanted-fill");
 const gameOverEl = document.getElementById("game-over");
 const finalTimeEl = document.getElementById("final-time");
+const finalCoinsEl = document.getElementById("final-coins");
 const restartBtn = document.getElementById("restart");
 
 const GRID_MARGIN = 35;
 const BUILDING_W = 85;
 const BUILDING_H = 90;
-const ROAD_WIDTH = 40;
-const GRID_COLS = 6;
-const GRID_ROWS = 3;
+const ROAD_WIDTH = 80;
+const GRID_COLS = 4;
+const GRID_ROWS = 2;
 const ROOF_COLORS = ["#3a3a3a", "#44403a", "#3a4044", "#403a3a", "#3d3d3d"];
 
 const BUILDINGS = [];
@@ -51,9 +53,26 @@ const TURN_RATE = 0.045;
 
 const DETECTION_RANGE = 150;
 const LOSE_RANGE = 240;
-const POLICE_SPEED = 3.2;
+const POLICE_SPEED = 1.6;
 const POLICE_SPAWN_INTERVAL = 20;
 const MAX_POLICE = 5;
+
+const COIN_RADIUS = 6;
+const COIN_COUNT = 18;
+
+function randomRoadPoint() {
+  let x, y;
+  do {
+    x = 20 + Math.random() * (W - 40);
+    y = 20 + Math.random() * (H - 40);
+  } while (circleHitsBuilding(x, y, COIN_RADIUS + 6));
+  return { x, y };
+}
+
+function spawnCoin() {
+  const p = randomRoadPoint();
+  return { x: p.x, y: p.y };
+}
 
 const keys = {};
 window.addEventListener("keydown", (e) => {
@@ -66,7 +85,7 @@ window.addEventListener("keyup", (e) => {
   keys[e.key] = false;
 });
 
-let player, police, wanted, elapsed, gameRunning, policeSpawnTimer;
+let player, police, wanted, elapsed, gameRunning, policeSpawnTimer, coins, coinsCollected;
 
 function circleHitsBuilding(x, y, r) {
   for (const b of BUILDINGS) {
@@ -87,6 +106,8 @@ function initGame() {
   elapsed = 0;
   gameRunning = true;
   policeSpawnTimer = POLICE_SPAWN_INTERVAL;
+  coins = Array.from({ length: COIN_COUNT }, spawnCoin);
+  coinsCollected = 0;
   gameOverEl.hidden = true;
   updateHud();
 }
@@ -95,6 +116,7 @@ function updateHud() {
   const m = Math.floor(elapsed / 60);
   const s = Math.floor(elapsed % 60);
   timeEl.textContent = `${m}:${s.toString().padStart(2, "0")}`;
+  coinsEl.textContent = coinsCollected;
   wantedFillEl.style.width = `${wanted}%`;
   wantedFillEl.style.backgroundColor = wanted > 60 ? "#ff3b3b" : wanted > 25 ? "#ff9d3b" : "#ffcc00";
 }
@@ -113,11 +135,11 @@ function moveCar(car, accelInput, brakeInput, turnInput) {
   const nx = car.x + Math.cos(car.angle) * car.speed;
   const ny = car.y + Math.sin(car.angle) * car.speed;
 
-  if (!circleHitsBuilding(nx, ny, CAR_RADIUS) && nx > CAR_RADIUS && nx < W - CAR_RADIUS && ny > CAR_RADIUS && ny < H - CAR_RADIUS) {
+  if (!circleHitsBuilding(nx, car.y, CAR_RADIUS) && nx > CAR_RADIUS && nx < W - CAR_RADIUS) {
     car.x = nx;
+  }
+  if (!circleHitsBuilding(car.x, ny, CAR_RADIUS) && ny > CAR_RADIUS && ny < H - CAR_RADIUS) {
     car.y = ny;
-  } else {
-    car.speed = 0;
   }
 }
 
@@ -166,10 +188,16 @@ function updatePolice(cop) {
   const nx = cop.x + Math.cos(cop.angle) * speed;
   const ny = cop.y + Math.sin(cop.angle) * speed;
 
-  if (!circleHitsBuilding(nx, ny, CAR_RADIUS) && nx > CAR_RADIUS && nx < W - CAR_RADIUS && ny > CAR_RADIUS && ny < H - CAR_RADIUS) {
+  let moved = false;
+  if (!circleHitsBuilding(nx, cop.y, CAR_RADIUS) && nx > CAR_RADIUS && nx < W - CAR_RADIUS) {
     cop.x = nx;
+    moved = true;
+  }
+  if (!circleHitsBuilding(cop.x, ny, CAR_RADIUS) && ny > CAR_RADIUS && ny < H - CAR_RADIUS) {
     cop.y = ny;
-  } else {
+    moved = true;
+  }
+  if (!moved) {
     cop.waypoint = pickWaypoint();
   }
 }
@@ -179,6 +207,13 @@ function update() {
 
   elapsed += 1 / 60;
   updatePlayer();
+
+  for (let i = 0; i < coins.length; i++) {
+    if (Math.hypot(coins[i].x - player.x, coins[i].y - player.y) < CAR_RADIUS + COIN_RADIUS) {
+      coinsCollected++;
+      coins[i] = spawnCoin();
+    }
+  }
 
   let anyChasing = false;
   for (const cop of police) {
@@ -212,6 +247,7 @@ function update() {
 function busted() {
   gameRunning = false;
   finalTimeEl.textContent = timeEl.textContent;
+  finalCoinsEl.textContent = coinsCollected;
   gameOverEl.hidden = false;
 }
 
@@ -304,10 +340,27 @@ function drawBuildings() {
   }
 }
 
+function drawCoins() {
+  for (const c of coins) {
+    ctx.beginPath();
+    ctx.arc(c.x, c.y, COIN_RADIUS, 0, Math.PI * 2);
+    ctx.fillStyle = "#ffe28a";
+    ctx.fill();
+    ctx.strokeStyle = "#c9a227";
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(c.x - 2, c.y - 2, 1.5, 0, Math.PI * 2);
+    ctx.fillStyle = "#fff7d6";
+    ctx.fill();
+  }
+}
+
 function draw() {
   ctx.clearRect(0, 0, W, H);
 
   drawBuildings();
+  drawCoins();
 
   for (const cop of police) {
     drawPoliceCar(cop, cop.state === "chasing");
