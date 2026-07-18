@@ -28,39 +28,26 @@ let timerInterval = null;
 let solved = false;
 let blackSlots = new Set();
 
-const BLACK_THRESHOLD = 12;
+// Precomputed offline (Pillow) per image/difficulty: tile indices that are
+// solid black, so they're visually interchangeable for win-checking.
+const BLACK_SLOTS_DATA = {
+  "eagle-nebula": { 3: [], 4: [], 5: [] },
+  "saturn-rings": { 3: [0], 4: [0, 1, 4, 15], 5: [0, 1, 2, 5, 6, 10, 24] },
+  earthrise: { 3: [0, 1, 2], 4: [0, 1, 2, 3], 5: [0, 1, 2, 3, 4, 5, 6, 8, 9] },
+  "saturn-2025": {
+    3: [0, 2, 6, 7, 8],
+    4: [0, 1, 2, 3, 11, 12, 13, 14, 15],
+    5: [0, 1, 2, 3, 4, 5, 15, 19, 20, 21, 22, 23, 24],
+  },
+  "active-spiral": { 3: [], 4: [], 5: [] },
+  "messier-58": { 3: [], 4: [], 5: [] },
+  "orion-stars": { 3: [], 4: [], 5: [] },
+  "massive-stars": { 3: [], 4: [], 5: [] },
+};
 
-async function detectBlackSlots(tileSize) {
-  blackSlots = new Set();
-  try {
-    const img = new Image();
-    img.src = IMAGES[currentImage];
-    await img.decode();
-
-    const canvas = document.createElement("canvas");
-    canvas.width = BOARD_SIZE;
-    canvas.height = BOARD_SIZE;
-    const sampleCtx = canvas.getContext("2d");
-    sampleCtx.drawImage(img, 0, 0, BOARD_SIZE, BOARD_SIZE);
-
-    const total = gridSize * gridSize;
-    for (let correctIndex = 0; correctIndex < total; correctIndex++) {
-      const row = Math.floor(correctIndex / gridSize);
-      const col = correctIndex % gridSize;
-      const data = sampleCtx.getImageData(col * tileSize, row * tileSize, tileSize, tileSize).data;
-      let isBlack = true;
-      for (let i = 0; i < data.length; i += 4) {
-        if (data[i] > BLACK_THRESHOLD || data[i + 1] > BLACK_THRESHOLD || data[i + 2] > BLACK_THRESHOLD) {
-          isBlack = false;
-          break;
-        }
-      }
-      if (isBlack) blackSlots.add(correctIndex);
-    }
-  } catch (err) {
-    console.error("Black-slot detection failed:", err);
-  }
-  checkWin();
+function detectBlackSlots() {
+  const indices = BLACK_SLOTS_DATA[currentImage]?.[gridSize] || [];
+  blackSlots = new Set(indices);
 }
 
 let dragState = null;
@@ -109,7 +96,7 @@ function buildBoard() {
   const tileSize = BOARD_SIZE / gridSize;
   const total = gridSize * gridSize;
   const slotOrder = shuffle([...Array(total).keys()]);
-  detectBlackSlots(tileSize);
+  detectBlackSlots();
 
   for (let correctIndex = 0; correctIndex < total; correctIndex++) {
     const row = Math.floor(correctIndex / gridSize);
