@@ -32,6 +32,44 @@ header {
   margin-bottom: 40px;
 }
 
+#auth-area {
+  margin-top: 16px;
+}
+
+#sign-in-btn,
+#sign-out-btn {
+  padding: 8px 16px;
+  border: 1px solid #555;
+  border-radius: 5px;
+  background-color: #2b6cb0;
+  color: #fff;
+  cursor: pointer;
+  font-size: 0.9em;
+}
+
+#sign-in-btn:hover,
+#sign-out-btn:hover {
+  background-color: #235a92;
+}
+
+#user-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+#user-photo {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+}
+
+#user-name {
+  color: #ccc;
+  font-size: 0.9em;
+}
+
 h1 {
   color: #8ecbff;
 }
