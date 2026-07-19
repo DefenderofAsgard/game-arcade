@@ -278,6 +278,8 @@ function busted() {
   finalCoinsEl.textContent = coinsCollected;
   finalScoreEl.textContent = coinsCollected;
   gameOverEl.hidden = false;
+  savePlatformProgress("copChase", { score: coinsCollected, coins: coinsCollected });
+  addPlaytime(elapsed);
   if (window.Leaderboard && window.Leaderboard.qualifiesForTopThree(coinsCollected)) {
     nameEntryEl.hidden = false;
     playerNameInput.value = "";

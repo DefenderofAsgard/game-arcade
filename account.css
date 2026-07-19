@@ -1,0 +1,81 @@
+.back-link {
+  display: inline-block;
+  margin-bottom: 20px;
+  color: #8ecbff;
+  text-decoration: none;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+#account-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+#account-photo {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  margin-bottom: 12px;
+}
+
+#account-initial.avatar-fallback {
+  width: 72px;
+  height: 72px;
+  font-size: 1.8em;
+  margin-bottom: 12px;
+}
+
+#account-header h1 {
+  color: #8ecbff;
+  margin: 0;
+  font-size: 1.4em;
+}
+
+.stat-card {
+  background-color: rgba(255, 255, 255, 0.06);
+  border: 1px solid #333;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+}
+
+#lifetime-card {
+  margin-bottom: 20px;
+}
+
+#lifetime-card h2 {
+  margin-top: 0;
+  color: #ccc;
+  font-size: 1em;
+  font-weight: normal;
+}
+
+.big-stat {
+  font-size: 2em;
+  font-weight: bold;
+  color: #ffe28a;
+  margin: 0;
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.stat-grid h3 {
+  margin-top: 0;
+  color: #8ecbff;
+}
+
+.stat-grid p {
+  margin: 6px 0;
+  color: #ccc;
+  font-size: 0.9em;
+}

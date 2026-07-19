@@ -16,7 +16,7 @@ const H = canvas.height;
 
 const keys = {};
 
-let player, enemies, particles, score, wave, gameRunning, disintegrateUsed;
+let player, enemies, particles, knives, score, wave, gameRunning, disintegrateUsed, sessionStart;
 
 function initGame() {
   player = {
@@ -35,13 +35,16 @@ function initGame() {
     spinAngle: 0,
     walkPhase: 0,
     isMoving: false,
+    knifeCooldown: 0,
   };
   enemies = [];
   particles = makeParticlePool();
+  knives = [];
   score = 0;
   wave = 1;
   gameRunning = true;
   disintegrateUsed = false;
+  sessionStart = Date.now();
   gameOverEl.hidden = true;
   updateHud();
   spawnWave();
@@ -117,6 +120,10 @@ const ATTACK_DURATION = 14;
 const ENEMY_ATTACK_RANGE = 45;
 const SPIN_SPEED = 0.35;
 const SPIN_HIT_INTERVAL = 12;
+const KNIFE_SPEED = 8;
+const KNIFE_COOLDOWN = 30;
+const KNIFE_DAMAGE = 15;
+const KNIFE_LENGTH = 16;
 
 const SOUND_FILES = {
   death: "sounds/death.wav",
@@ -155,6 +162,34 @@ function attack() {
   player.swingStartFacing = player.facing;
 }
 
+function throwKnife() {
+  if (!gameRunning) return;
+  if (player.knifeCooldown > 0) return;
+  if (enemies.length === 0) return;
+
+  let nearest = null;
+  let nearestDist = Infinity;
+  for (const enemy of enemies) {
+    const dist = Math.hypot(enemy.x - player.x, enemy.y - player.y);
+    if (dist < nearestDist) {
+      nearestDist = dist;
+      nearest = enemy;
+    }
+  }
+  if (!nearest) return;
+
+  const angle = Math.atan2(nearest.y - player.y, nearest.x - player.x);
+  knives.push({
+    x: player.x,
+    y: player.y,
+    vx: Math.cos(angle) * KNIFE_SPEED,
+    vy: Math.sin(angle) * KNIFE_SPEED,
+    angle,
+    life: 90,
+  });
+  player.knifeCooldown = KNIFE_COOLDOWN;
+}
+
 const SCROLL_KEYS = ["arrowup", "arrowdown", "arrowleft", "arrowright", " "];
 
 window.addEventListener("keydown", (e) => {
@@ -165,6 +200,9 @@ window.addEventListener("keydown", (e) => {
   }
   if (e.key === " ") {
     player.spinning = true;
+  }
+  if (e.key.toLowerCase() === "c") {
+    throwKnife();
   }
 });
 window.addEventListener("keyup", (e) => {
@@ -219,6 +257,28 @@ function update() {
   player.y = Math.max(player.r, Math.min(H - player.r, player.y));
 
   if (player.attackCooldown > 0) player.attackCooldown--;
+  if (player.knifeCooldown > 0) player.knifeCooldown--;
+
+  for (let i = knives.length - 1; i >= 0; i--) {
+    const knife = knives[i];
+    knife.x += knife.vx;
+    knife.y += knife.vy;
+    knife.life--;
+
+    let hit = false;
+    for (const enemy of enemies) {
+      if (Math.hypot(enemy.x - knife.x, enemy.y - knife.y) < enemy.r + 8) {
+        enemy.health -= KNIFE_DAMAGE;
+        spawnParticles(knife.x, knife.y, 6, "#4fd6ff");
+        hit = true;
+        break;
+      }
+    }
+
+    if (hit || knife.life <= 0 || knife.x < -20 || knife.x > W + 20 || knife.y < -20 || knife.y > H + 20) {
+      knives.splice(i, 1);
+    }
+  }
 
   if (player.spinning) {
     player.spinAngle += SPIN_SPEED;
@@ -323,6 +383,8 @@ function update() {
     finalScoreEl.textContent = score;
     gameOverEl.hidden = false;
     playSound("gameOver");
+    savePlatformProgress("stickDuel", { score, wave });
+    addPlaytime((Date.now() - sessionStart) / 1000);
     if (window.Leaderboard && window.Leaderboard.qualifiesForTopThree(score)) {
       nameEntryEl.hidden = false;
       playerNameInput.value = "";
@@ -401,6 +463,36 @@ function drawStickFigure(x, y, facing, color, r, swingAngle, saberColor, walkPha
   }
 }
 
+function drawKnives() {
+  for (const knife of knives) {
+    const half = KNIFE_LENGTH / 2;
+    const tipX = knife.x + Math.cos(knife.angle) * half;
+    const tipY = knife.y + Math.sin(knife.angle) * half;
+    const tailX = knife.x - Math.cos(knife.angle) * half;
+    const tailY = knife.y - Math.sin(knife.angle) * half;
+
+    ctx.save();
+    ctx.shadowColor = "#4fd6ff";
+    ctx.shadowBlur = 10;
+    ctx.strokeStyle = "#4fd6ff";
+    ctx.lineWidth = 4;
+    ctx.lineCap = "round";
+    ctx.beginPath();
+    ctx.moveTo(tailX, tailY);
+    ctx.lineTo(tipX, tipY);
+    ctx.stroke();
+
+    ctx.shadowBlur = 0;
+    ctx.strokeStyle = "#eafcff";
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(tailX, tailY);
+    ctx.lineTo(tipX, tipY);
+    ctx.stroke();
+    ctx.restore();
+  }
+}
+
 function draw() {
   ctx.clearRect(0, 0, W, H);
 
@@ -411,6 +503,8 @@ function draw() {
     ctx.fillRect(p.x - 2, p.y - 2, 4, 4);
   }
   ctx.globalAlpha = 1;
+
+  drawKnives();
 
   for (const enemy of enemies) {
     let enemySwingAngle = enemy.facing;

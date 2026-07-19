@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Account — Austin's Arcade</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="account.css">
+</head>
+<body>
+
+  <a class="back-link" href="index.html">&larr; Back to Arcade</a>
+
+  <header id="account-header">
+    <img id="account-photo" alt="">
+    <span id="account-initial" class="avatar-fallback" hidden></span>
+    <h1 id="account-name">Loading…</h1>
+  </header>
+
+  <section class="stat-card" id="lifetime-card">
+    <h2>Lifetime Playtime</h2>
+    <p id="lifetime-playtime" class="big-stat">—</p>
+  </section>
+
+  <main class="stat-grid">
+    <div class="stat-card">
+      <h3>Stick Duel</h3>
+      <p>Best Score: <span id="sd-best">—</span></p>
+      <p>Games Played: <span id="sd-played">0</span></p>
+    </div>
+    <div class="stat-card">
+      <h3>Cop Chase</h3>
+      <p>Best Score: <span id="cc-best">—</span></p>
+      <p>Games Played: <span id="cc-played">0</span></p>
+    </div>
+    <div class="stat-card">
+      <h3>NASA Jigsaw</h3>
+      <p>Puzzles Completed: <span id="jg-completed">0</span></p>
+      <p>Best Time: <span id="jg-best">—</span></p>
+    </div>
+  </main>
+
+  <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
+  <script src="platform.js"></script>
+  <script src="account.js"></script>
+</body>
+</html>

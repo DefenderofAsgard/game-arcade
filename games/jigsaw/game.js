@@ -27,6 +27,7 @@ let seconds = 0;
 let timerInterval = null;
 let solved = false;
 let blackSlots = new Set();
+let lastFlushedSeconds = 0;
 
 // Precomputed offline (Pillow) per image/difficulty: tile indices that are
 // solid black, so they're visually interchangeable for win-checking.
@@ -58,9 +59,9 @@ function formatTime(s) {
   return `${m}:${sec.toString().padStart(2, "0")}`;
 }
 
-function startTimer() {
+function startTimer(startSeconds) {
   clearInterval(timerInterval);
-  seconds = 0;
+  seconds = startSeconds || 0;
   timeEl.textContent = formatTime(seconds);
   timerInterval = setInterval(() => {
     seconds++;
@@ -84,18 +85,24 @@ function layoutPiece(piece) {
   piece.el.style.top = `${row * tileSize}px`;
 }
 
-function buildBoard() {
+function buildBoard(savedState) {
   boardEl.innerHTML = "";
   boardEl.classList.remove("solved");
   pieces = [];
-  moves = 0;
   solved = false;
-  movesEl.textContent = moves;
   winMessageEl.hidden = true;
 
   const tileSize = BOARD_SIZE / gridSize;
   const total = gridSize * gridSize;
-  const slotOrder = shuffle([...Array(total).keys()]);
+  let slotOrder;
+  if (savedState && savedState.slots && savedState.slots.length === total) {
+    slotOrder = savedState.slots;
+    moves = savedState.moves || 0;
+  } else {
+    slotOrder = shuffle([...Array(total).keys()]);
+    moves = 0;
+  }
+  movesEl.textContent = moves;
   detectBlackSlots();
 
   for (let correctIndex = 0; correctIndex < total; correctIndex++) {
@@ -117,7 +124,20 @@ function buildBoard() {
     layoutPiece(piece);
   }
 
-  startTimer();
+  startTimer(savedState ? savedState.seconds : 0);
+  lastFlushedSeconds = seconds;
+}
+
+function flushPlaytime() {
+  const delta = seconds - lastFlushedSeconds;
+  if (delta > 0) addPlaytime(delta);
+  lastFlushedSeconds = seconds;
+}
+
+function currentSlots() {
+  const slots = new Array(pieces.length);
+  for (const p of pieces) slots[p.correctIndex] = p.slotIndex;
+  return slots;
 }
 
 function startDrag(e, piece) {
@@ -170,6 +190,16 @@ window.addEventListener("mouseup", (e) => {
   dragState = null;
 
   checkWin();
+  if (!solved) {
+    flushPlaytime();
+    saveJigsawState({
+      image: currentImage,
+      gridSize,
+      moves,
+      seconds,
+      slots: currentSlots(),
+    });
+  }
 });
 
 function isPieceCorrect(p) {
@@ -188,6 +218,8 @@ function checkWin() {
     winMessageEl.hidden = false;
     boardEl.classList.add("solved");
     new Audio("sounds/solved.wav").play().catch(() => {});
+    flushPlaytime();
+    clearJigsawState({ seconds });
   }
 }
 
@@ -207,7 +239,7 @@ document.getElementById("difficulty-picker").addEventListener("click", (e) => {
   buildBoard();
 });
 
-playAgainBtn.addEventListener("click", buildBoard);
+playAgainBtn.addEventListener("click", () => buildBoard());
 
 function updateSelectedButtons() {
   document.querySelectorAll(".thumb-btn").forEach((b) => {
@@ -219,4 +251,20 @@ function updateSelectedButtons() {
 }
 
 updateSelectedButtons();
-buildBoard();
+
+const unsubscribeAuth = platformAuth.onAuthStateChanged(async (user) => {
+  unsubscribeAuth();
+  if (!user) {
+    buildBoard();
+    return;
+  }
+  const saved = await loadJigsawState();
+  if (saved && saved.slots) {
+    currentImage = saved.image;
+    gridSize = saved.gridSize;
+    updateSelectedButtons();
+    buildBoard(saved);
+  } else {
+    buildBoard();
+  }
+});
