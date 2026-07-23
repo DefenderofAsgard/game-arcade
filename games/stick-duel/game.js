@@ -10,6 +10,12 @@ const restartBtn = document.getElementById("restart");
 const nameEntryEl = document.getElementById("name-entry");
 const playerNameInput = document.getElementById("player-name");
 const submitScoreBtn = document.getElementById("submit-score");
+const bestScoreEl = document.getElementById("best-score");
+const newBestEl = document.getElementById("new-best");
+
+const BEST_KEY = "stickDuelBestScore";
+let bestScore = Number(localStorage.getItem(BEST_KEY)) || 0;
+bestScoreEl.textContent = bestScore;
 
 const W = canvas.width;
 const H = canvas.height;
@@ -381,6 +387,14 @@ function update() {
     player.health = 0;
     gameRunning = false;
     finalScoreEl.textContent = score;
+    if (score > bestScore) {
+      bestScore = score;
+      localStorage.setItem(BEST_KEY, String(bestScore));
+      bestScoreEl.textContent = bestScore;
+      newBestEl.hidden = false;
+    } else {
+      newBestEl.hidden = true;
+    }
     gameOverEl.hidden = false;
     playSound("gameOver");
     savePlatformProgress("stickDuel", { score, wave });

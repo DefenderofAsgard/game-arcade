@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Stick Duel</title>
+  <title>Circuit Builder</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="../../logo.css">
   <script src="../../lock.js"></script>
@@ -13,28 +13,26 @@
 
   <a class="back-link" href="../../index.html">&larr; Back to Arcade</a>
 
-  <h1>Stick Duel</h1>
-  <p class="instructions">Move: WASD / Arrow Keys &nbsp;|&nbsp; Attack: Space or Click &nbsp;|&nbsp; Throw Knife: C</p>
+  <h1>Circuit Builder</h1>
+  <p class="instructions">Click wires to rotate them. Connect the battery to the bulb to light it up and advance to the next level.</p>
 
   <div class="hud">
-    <span>Health: <span id="health">100</span></span>
+    <span>Level: <span id="level">1</span></span>
     <span>Score: <span id="score">0</span></span>
     <span>Best: <span id="best-score">0</span></span>
-    <span>Wave: <span id="wave">1</span></span>
+    <span>Time: <span id="time">0:00</span></span>
   </div>
 
-  <canvas id="game" width="800" height="500"></canvas>
+  <div id="grid" class="circuit-grid"></div>
 
-  <div id="game-over" hidden>
-    <h2>You Died</h2>
+  <div class="controls">
+    <button id="give-up">Give Up</button>
+  </div>
+
+  <div id="session-over" hidden>
+    <h2>Session Complete</h2>
+    <p>Levels Completed: <span id="final-levels">0</span></p>
     <p>Final Score: <span id="final-score">0</span></p>
-
-    <div id="name-entry" hidden>
-      <p>New top 3 score! Enter your name:</p>
-      <input id="player-name" maxlength="20" placeholder="Your name">
-      <button id="submit-score">Submit</button>
-    </div>
-
     <p id="new-best" hidden>New personal best!</p>
     <div class="session-over-actions">
       <button id="restart">Play Again</button>
@@ -42,17 +40,10 @@
     </div>
   </div>
 
-  <div id="leaderboard">
-    <h2>Top Scores</h2>
-    <ol id="leaderboard-list"></ol>
-  </div>
-
   <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
-  <script src="firebase-config.js"></script>
   <script src="../../platform.js"></script>
-  <script src="leaderboard.js"></script>
   <script src="game.js"></script>
 </body>
 </html>

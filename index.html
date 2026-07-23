@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>Austin's Arcade</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="logo.css">
 </head>
 <body>
 
@@ -12,7 +13,7 @@
   </div>
 
   <header>
-    <h1>Austin's Arcade</h1>
+    <h1>A's Arcade</h1>
     <p>Free browser games. Pick one and play.</p>
     <p class="disclaimer">Requires a keyboard with arrow keys for full gameplay.</p>
 
@@ -21,7 +22,6 @@
       <div id="user-info" hidden>
         <a id="account-link" href="account.html">
           <img id="user-photo" alt="">
-          <span id="user-initial" class="avatar-fallback" hidden></span>
           <span id="user-name"></span>
         </a>
         <button id="sign-out-btn">Sign out</button>
@@ -42,7 +42,25 @@
       <h2>Cop Chase</h2>
       <p>Top-down driving. Dodge the cops and survive as long as you can.</p>
     </a>
+    <a class="game-card" href="games/circuit-builder/index.html">
+      <h2>Circuit Builder</h2>
+      <p>Rotate wires to connect the battery to the bulb. Learn basic circuits, level by level.</p>
+    </a>
+    <a class="game-card" href="games/orbit-mechanics/index.html">
+      <h2>Orbit Mechanics</h2>
+      <p>Launch a probe and dial in the speed and angle to lock a stable orbit around the planet.</p>
+    </a>
+    <a class="game-card" href="games/element-rush/index.html">
+      <h2>Element Rush</h2>
+      <p>Sort falling elements into Metal, Nonmetal, or Noble Gas before they hit the line.</p>
+    </a>
+    <a class="game-card" href="games/code-runner/index.html">
+      <h2>Code Runner</h2>
+      <p>Program a robot with Forward/Turn/Repeat blocks to reach the goal. Learn loops visually.</p>
+    </a>
   </main>
+
+  <img class="brand-logo-footer" src="logo.svg" alt="Austin Simpson logo">
 
   <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script>

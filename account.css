@@ -24,13 +24,6 @@
   margin-bottom: 12px;
 }
 
-#account-initial.avatar-fallback {
-  width: 72px;
-  height: 72px;
-  font-size: 1.8em;
-  margin-bottom: 12px;
-}
-
 #account-header h1 {
   color: #8ecbff;
   margin: 0;

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Code Runner</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../../logo.css">
+  <script src="../../lock.js"></script>
+</head>
+<body>
+
+  <img class="brand-logo-corner" src="../../logo.svg" alt="Austin Simpson logo">
+
+  <a class="back-link" href="../../index.html">&larr; Back to Arcade</a>
+
+  <h1>Code Runner</h1>
+  <p class="instructions">Build a program to guide the robot to the goal. Use Repeat to teach it loops!</p>
+
+  <div class="hud">
+    <span>Level: <span id="level">1</span></span>
+    <span>Score: <span id="score">0</span></span>
+    <span>Best: <span id="best-score">0</span></span>
+  </div>
+
+  <div class="play-area">
+    <canvas id="game" width="360" height="360"></canvas>
+
+    <div class="program-panel">
+      <div class="builder-controls">
+        <button id="btn-forward">Forward</button>
+        <button id="btn-left">Turn Left</button>
+        <button id="btn-right">Turn Right</button>
+        <button id="btn-repeat">Add Repeat</button>
+        <button id="btn-end-repeat" disabled>End Repeat</button>
+      </div>
+      <div class="builder-controls">
+        <button id="btn-undo">Undo Last</button>
+        <button id="btn-clear">Clear Program</button>
+      </div>
+
+      <ol id="program-list"></ol>
+
+      <div class="builder-controls">
+        <button id="btn-run">Run</button>
+      </div>
+      <p id="status-msg"></p>
+    </div>
+  </div>
+
+  <div class="session-controls">
+    <button id="btn-end-session">End Session</button>
+  </div>
+
+  <div id="summary" hidden>
+    <h2>Session Complete</h2>
+    <p>Final Score: <span id="final-score">0</span></p>
+    <p>Levels Completed: <span id="final-levels">0</span></p>
+    <p id="new-best" hidden>New personal best!</p>
+    <div class="session-over-actions">
+      <button id="btn-new-session">Play Again</button>
+      <a class="back-link" href="../../index.html">&larr; Back to Arcade</a>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
+  <script src="../../platform.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>

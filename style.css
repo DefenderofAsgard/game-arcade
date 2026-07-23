@@ -79,22 +79,6 @@ header {
   border-radius: 50%;
 }
 
-.avatar-fallback {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  background-color: #2b6cb0;
-  color: #fff;
-  font-weight: bold;
-}
-
-#user-initial.avatar-fallback {
-  width: 28px;
-  height: 28px;
-  font-size: 0.85em;
-}
-
 #user-name {
   color: #ccc;
   font-size: 0.9em;

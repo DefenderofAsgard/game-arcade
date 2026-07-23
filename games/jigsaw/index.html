@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>NASA Jigsaw</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../../logo.css">
   <script src="../../lock.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script>
@@ -11,6 +12,8 @@
   <script src="../../platform.js"></script>
 </head>
 <body>
+
+  <img class="brand-logo-corner" src="../../logo.svg" alt="Austin Simpson logo">
 
   <a class="back-link" href="../../index.html">&larr; Back to Arcade</a>
 
@@ -38,6 +41,7 @@
   <div class="hud">
     <span>Moves: <span id="moves">0</span></span>
     <span>Time: <span id="time">0:00</span></span>
+    <span>Best Time: <span id="best-time">—</span></span>
   </div>
 
   <div id="board" class="board"></div>
@@ -45,7 +49,11 @@
   <div id="win-message" hidden>
     <h2>Solved!</h2>
     <p>Moves: <span id="final-moves"></span> &middot; Time: <span id="final-time"></span></p>
-    <button id="play-again">New Puzzle</button>
+    <p id="new-best" hidden>New best time for this size!</p>
+    <div class="session-over-actions">
+      <button id="play-again">New Puzzle</button>
+      <a class="back-link" href="../../index.html">&larr; Back to Arcade</a>
+    </div>
   </div>
 
   <script src="game.js"></script>

@@ -15,19 +15,14 @@ platformAuth.onAuthStateChanged(async (user) => {
   }
 
   const accountPhoto = document.getElementById("account-photo");
-  const accountInitial = document.getElementById("account-initial");
-  accountInitial.textContent = (user.displayName || user.email || "?").charAt(0).toUpperCase();
   if (user.photoURL) {
     accountPhoto.src = user.photoURL;
     accountPhoto.hidden = false;
-    accountInitial.hidden = true;
     accountPhoto.onerror = () => {
       accountPhoto.hidden = true;
-      accountInitial.hidden = false;
     };
   } else {
     accountPhoto.hidden = true;
-    accountInitial.hidden = false;
   }
   document.getElementById("account-name").textContent = user.displayName;
 
@@ -49,4 +44,20 @@ platformAuth.onAuthStateChanged(async (user) => {
   document.getElementById("jg-completed").textContent = jg.puzzlesCompleted ?? 0;
   document.getElementById("jg-best").textContent =
     typeof jg.bestTimeSeconds === "number" ? formatDuration(jg.bestTimeSeconds) : "—";
+
+  const cb = progress.circuitBuilder || {};
+  document.getElementById("cb-best").textContent = cb.bestScore ?? "—";
+  document.getElementById("cb-played").textContent = cb.gamesPlayed ?? 0;
+
+  const om = progress.orbitMechanics || {};
+  document.getElementById("om-best").textContent = om.bestScore ?? "—";
+  document.getElementById("om-played").textContent = om.gamesPlayed ?? 0;
+
+  const er = progress.elementRush || {};
+  document.getElementById("er-best").textContent = er.bestScore ?? "—";
+  document.getElementById("er-played").textContent = er.gamesPlayed ?? 0;
+
+  const cr = progress.codeRunner || {};
+  document.getElementById("cr-best").textContent = cr.bestScore ?? "—";
+  document.getElementById("cr-played").textContent = cr.gamesPlayed ?? 0;
 });

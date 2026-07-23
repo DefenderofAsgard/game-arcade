@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Orbit Mechanics</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../../logo.css">
+  <script src="../../lock.js"></script>
+</head>
+<body>
+
+  <img class="brand-logo-corner" src="../../logo.svg" alt="Austin Simpson logo">
+
+  <a class="back-link" href="../../index.html">&larr; Back to Arcade</a>
+
+  <h1>Orbit Mechanics</h1>
+  <p class="instructions">Every level launches you from a different planet in the solar system, each with its own
+    real surface gravity &mdash; the same speed and angle won't work twice. You get 3 attempts per level and 60
+    seconds to decide on each one &mdash; if time runs out, that attempt is used up. Set a launch angle &amp; speed,
+    then hit Launch &mdash; straight up just falls back down, so aim sideways to actually get into orbit, the same
+    way real rockets pitch over after liftoff. Too slow and you'll fall back into the planet; too fast and you'll
+    fly off into space. Keep your orbit from exceeding the outer edge of the target ring for a full revolution
+    &mdash; tighter rings are worth more points. Run out of attempts on a level and the session ends.</p>
+
+  <div class="hud">
+    <span>Planet: <span id="planet-name">Mercury</span></span>
+    <span>Level: <span id="level">1</span></span>
+    <span>Score: <span id="score">0</span></span>
+    <span>Best: <span id="best-score">0</span></span>
+    <span>Attempts Left: <span id="attempts-left">3</span></span>
+    <span>Decide In: <span id="decision-timer">60s</span></span>
+    <span id="status">Ready to launch</span>
+  </div>
+
+  <canvas id="game" width="600" height="600"></canvas>
+
+  <div class="controls">
+    <label>
+      Angle: <span id="angle-value">0&deg;</span>
+      <input type="range" id="angle" min="0" max="359" value="0" step="1">
+    </label>
+    <label>
+      Speed: <span id="speed-value">30</span> px/s
+      <input type="range" id="speed" min="30" max="650" value="30" step="1">
+    </label>
+    <div class="button-row">
+      <button id="launch-btn">Launch</button>
+      <button id="abort-btn" hidden>Abort Flight</button>
+      <button id="end-session-btn">End Session</button>
+    </div>
+  </div>
+
+  <div id="session-summary" hidden>
+    <h2>Session Saved</h2>
+    <p>Final Score: <span id="final-score">0</span></p>
+    <p>Levels Completed: <span id="final-levels">0</span></p>
+    <p id="new-best" hidden>New personal best!</p>
+    <div class="session-over-actions">
+      <button id="new-session-btn">Start New Session</button>
+      <a class="back-link" href="../../index.html">&larr; Back to Arcade</a>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
+  <script src="../../platform.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>

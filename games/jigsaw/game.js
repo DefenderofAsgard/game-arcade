@@ -18,6 +18,17 @@ const winMessageEl = document.getElementById("win-message");
 const finalMovesEl = document.getElementById("final-moves");
 const finalTimeEl = document.getElementById("final-time");
 const playAgainBtn = document.getElementById("play-again");
+const bestTimeEl = document.getElementById("best-time");
+const newBestEl = document.getElementById("new-best");
+
+function bestTimeKey(size) {
+  return `jigsawBestTime_${size}`;
+}
+
+function updateBestTimeDisplay() {
+  const stored = Number(localStorage.getItem(bestTimeKey(gridSize)));
+  bestTimeEl.textContent = stored ? formatTime(stored) : "—";
+}
 
 let currentImage = "eagle-nebula";
 let gridSize = 3;
@@ -215,6 +226,15 @@ function checkWin() {
     clearInterval(timerInterval);
     finalMovesEl.textContent = moves;
     finalTimeEl.textContent = formatTime(seconds);
+    const key = bestTimeKey(gridSize);
+    const prevBest = Number(localStorage.getItem(key));
+    if (!prevBest || seconds < prevBest) {
+      localStorage.setItem(key, String(seconds));
+      newBestEl.hidden = false;
+    } else {
+      newBestEl.hidden = true;
+    }
+    updateBestTimeDisplay();
     winMessageEl.hidden = false;
     boardEl.classList.add("solved");
     new Audio("sounds/solved.wav").play().catch(() => {});

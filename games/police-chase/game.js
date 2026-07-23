@@ -15,6 +15,12 @@ const restartBtn = document.getElementById("restart");
 const nameEntryEl = document.getElementById("name-entry");
 const playerNameInput = document.getElementById("player-name");
 const submitScoreBtn = document.getElementById("submit-score");
+const bestScoreEl = document.getElementById("best-score");
+const newBestEl = document.getElementById("new-best");
+
+const BEST_KEY = "copChaseBestScore";
+let bestScore = Number(localStorage.getItem(BEST_KEY)) || 0;
+bestScoreEl.textContent = bestScore;
 
 const GRID_MARGIN = 35;
 const BLOCK_W = 85;
@@ -258,9 +264,17 @@ function update() {
 
   policeSpawnTimer -= 1 / 60;
   if (policeSpawnTimer <= 0 && police.length < MAX_POLICE) {
+    const spawnPoints = [
+      { x: 30, y: 30 },
+      { x: W - 30, y: 30 },
+      { x: 30, y: H - 30 },
+      { x: W - 30, y: H - 30 },
+      { x: W / 2, y: H - 30 },
+    ];
+    const p = spawnPoints[Math.floor(Math.random() * spawnPoints.length)];
     police.push({
-      x: Math.random() < 0.5 ? 30 : W - 30,
-      y: Math.random() < 0.5 ? 30 : H - 30,
+      x: p.x,
+      y: p.y,
       angle: Math.random() * Math.PI * 2,
       speed: 0,
       state: "patrol",
@@ -277,6 +291,14 @@ function busted() {
   finalTimeEl.textContent = timeEl.textContent;
   finalCoinsEl.textContent = coinsCollected;
   finalScoreEl.textContent = coinsCollected;
+  if (coinsCollected > bestScore) {
+    bestScore = coinsCollected;
+    localStorage.setItem(BEST_KEY, String(bestScore));
+    bestScoreEl.textContent = bestScore;
+    newBestEl.hidden = false;
+  } else {
+    newBestEl.hidden = true;
+  }
   gameOverEl.hidden = false;
   savePlatformProgress("copChase", { score: coinsCollected, coins: coinsCollected });
   addPlaytime(elapsed);

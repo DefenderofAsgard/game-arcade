@@ -4,9 +4,12 @@
   <meta charset="UTF-8">
   <title>Cop Chase</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../../logo.css">
   <script src="../../lock.js"></script>
 </head>
 <body>
+
+  <img class="brand-logo-corner" src="../../logo.svg" alt="Austin Simpson logo">
 
   <a class="back-link" href="../../index.html">&larr; Back to Arcade</a>
 
@@ -17,6 +20,7 @@
     <span>Time: <span id="time">0:00</span></span>
     <span>Coins: <span id="coins">0</span></span>
     <span>Score: <span id="score">0</span></span>
+    <span>Best: <span id="best-score">0</span></span>
     <span>Wanted:</span>
     <div class="wanted-bar"><div id="wanted-fill" class="wanted-fill"></div></div>
   </div>
@@ -35,7 +39,11 @@
       <button id="submit-score">Submit</button>
     </div>
 
-    <button id="restart">Try Again</button>
+    <p id="new-best" hidden>New personal best!</p>
+    <div class="session-over-actions">
+      <button id="restart">Try Again</button>
+      <a class="back-link" href="../../index.html">&larr; Back to Arcade</a>
+    </div>
   </div>
 
   <div id="leaderboard">
