@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Checkers</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../../logo.css">
+  <script src="../../lock.js"></script>
+</head>
+<body>
+
+  <img class="brand-logo-corner" src="../../logo.svg" alt="Austin Simpson logo">
+
+  <a class="back-link" href="../../index.html">&larr; Back to Arcade</a>
+
+  <h1>Checkers</h1>
+  <p class="instructions">Click a piece to select it, then click a highlighted square to move it. Standard American checkers — captures are mandatory, and you must keep jumping with the same piece while more jumps are available.</p>
+
+  <div id="mode-select" class="panel">
+    <button id="btn-vs-cpu">Play vs Computer</button>
+    <button id="btn-online">Play a Friend Online</button>
+
+    <div id="online-choices" hidden>
+      <p class="color-prompt">Choose your color to create a room:</p>
+      <div class="color-choice-row">
+        <button id="btn-create-red">Play as Red</button>
+        <button id="btn-create-black">Play as Black</button>
+      </div>
+      <div class="join-row">
+        <input id="join-code" maxlength="5" placeholder="Room code">
+        <button id="btn-join-room">Join Room</button>
+      </div>
+      <p id="online-error" class="error-text"></p>
+    </div>
+  </div>
+
+  <div id="game-screen" hidden>
+    <div id="room-info" class="panel" hidden>
+      <p id="room-code-text"></p>
+      <div id="invite-actions" hidden>
+        <button id="btn-copy-invite">Copy Invite Link</button>
+        <a id="email-invite-link" href="mailto:">Invite via Email</a>
+        <p id="copy-feedback" class="copy-feedback" hidden></p>
+      </div>
+    </div>
+
+    <p id="status" class="status"></p>
+
+    <div id="board" class="board"></div>
+
+    <div id="result-banner" class="panel" hidden>
+      <p id="result-text"></p>
+      <div class="session-over-actions">
+        <button id="btn-play-again">Play Again</button>
+        <button id="btn-back-to-menu">Back to menu</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
+  <script src="../../platform.js"></script>
+  <script src="../shared/multiplayer.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>

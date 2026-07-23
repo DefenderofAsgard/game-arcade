@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Customize Chess</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../../logo.css">
+  <script src="../../lock.js"></script>
+</head>
+<body>
+
+  <img class="brand-logo-corner" src="../../logo.svg" alt="Austin Simpson logo">
+
+  <a class="back-link" href="index.html">&larr; Back to Chess</a>
+
+  <h1>Customize Board &amp; Pieces</h1>
+  <p class="instructions">Pick a board theme and a piece style below — your choice is saved automatically and becomes the default next time you play.</p>
+
+  <div class="customize-section">
+    <h2>Board Theme</h2>
+    <div class="swatch-grid">
+      <button class="swatch-btn" data-kind="theme" data-value="classic">
+        <div class="mini-board" style="--sq-light:#d9d9d9; --sq-dark:#555b6e;">
+          <div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div>
+          <div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div>
+          <div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div>
+          <div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div>
+        </div>
+        <span>Classic</span>
+      </button>
+      <button class="swatch-btn" data-kind="theme" data-value="wood">
+        <div class="mini-board" style="--sq-light:#f0d9b5; --sq-dark:#b58863;">
+          <div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div>
+          <div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div>
+          <div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div>
+          <div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div>
+        </div>
+        <span>Tournament Wood</span>
+      </button>
+      <button class="swatch-btn" data-kind="theme" data-value="emerald">
+        <div class="mini-board" style="--sq-light:#eeeed2; --sq-dark:#769656;">
+          <div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div>
+          <div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div>
+          <div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div>
+          <div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div>
+        </div>
+        <span>Emerald</span>
+      </button>
+      <button class="swatch-btn" data-kind="theme" data-value="neon">
+        <div class="mini-board" style="--sq-light:#24321f; --sq-dark:#0c140a;">
+          <div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div>
+          <div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div>
+          <div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div>
+          <div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div>
+        </div>
+        <span>Neon Arcade</span>
+      </button>
+      <button class="swatch-btn" data-kind="theme" data-value="ice">
+        <div class="mini-board" style="--sq-light:#e8f1f8; --sq-dark:#7ea8c4;">
+          <div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div>
+          <div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div>
+          <div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div>
+          <div class="sq dark"></div><div class="sq light"></div><div class="sq dark"></div><div class="sq light"></div>
+        </div>
+        <span>Ice</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="customize-section">
+    <h2>Piece Style</h2>
+    <div class="swatch-grid">
+      <button class="swatch-btn" data-kind="pieces" data-value="classic">
+        <div class="mini-pieces" style="--piece-white-color:#fff; --piece-white-glow:#000; --piece-black-color:#111; --piece-black-glow:rgba(255,255,255,0.35);">
+          <span class="piece-white">&#9812;</span><span class="piece-black">&#9818;</span>
+        </div>
+        <span>Classic</span>
+      </button>
+      <button class="swatch-btn" data-kind="pieces" data-value="crimson">
+        <div class="mini-pieces" style="--piece-white-color:#ffe9c7; --piece-white-glow:#7a2318; --piece-black-color:#a3162c; --piece-black-glow:rgba(255,233,199,0.45);">
+          <span class="piece-white">&#9812;</span><span class="piece-black">&#9818;</span>
+        </div>
+        <span>Crimson</span>
+      </button>
+      <button class="swatch-btn" data-kind="pieces" data-value="royal">
+        <div class="mini-pieces" style="--piece-white-color:#f5e6c8; --piece-white-glow:#4b2e83; --piece-black-color:#3b1f5c; --piece-black-glow:rgba(245,230,200,0.45);">
+          <span class="piece-white">&#9812;</span><span class="piece-black">&#9818;</span>
+        </div>
+        <span>Royal</span>
+      </button>
+      <button class="swatch-btn" data-kind="pieces" data-value="glow">
+        <div class="mini-pieces" style="--piece-white-color:#39ff14; --piece-white-glow:#1a6b0a; --piece-black-color:#00c8ff; --piece-black-glow:#005f7a;">
+          <span class="piece-white">&#9812;</span><span class="piece-black">&#9818;</span>
+        </div>
+        <span>Neon Glow</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="customize-section">
+    <h2>Live Preview</h2>
+    <div id="preview-board" class="board preview-board-el"></div>
+  </div>
+
+  <div class="customize-section session-over-actions">
+    <a class="back-link" href="index.html">Play Chess &rarr;</a>
+  </div>
+
+  <script src="customize.js"></script>
+</body>
+</html>

@@ -11,7 +11,7 @@ body {
 .back-link {
   display: inline-block;
   margin-bottom: 10px;
-  color: #8ecbff;
+  color: #39ff14;
   text-decoration: none;
 }
 
@@ -20,7 +20,7 @@ body {
 }
 
 h1 {
-  color: #8ecbff;
+  color: #39ff14;
   margin-bottom: 5px;
 }
 
@@ -47,7 +47,7 @@ h1 {
 }
 
 #new-best {
-  color: #8ecbff;
+  color: #39ff14;
   font-weight: bold;
 }
 

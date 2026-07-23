@@ -14,13 +14,13 @@ No build/dev/test/lint tooling exists — serve the folder directly, e.g. `pytho
 
 - `index.html`, `style.css`, `platform.js`, `auth.js`, `lock.js` — the arcade hub (game grid + sign-in).
 - `account.html`, `account.js`, `account.css` — signed-in user's account/stats page.
-- `games/<game-name>/` — one folder per game (`stick-duel`, `jigsaw`, `police-chase`, `circuit-builder`, `orbit-mechanics`, `element-rush`, `code-runner`), each with its own `index.html`, `game.js`, `style.css`, and assets (`sounds/`, `images/`) where applicable.
-- `circuit-builder`, `orbit-mechanics`, `element-rush`, `code-runner` are the STEM-education games (electricity/logic, orbital physics, chemistry categorization, and programming loops respectively). They only use the shared platform app for progress (no per-game Firebase project/leaderboard).
+- `games/<game-name>/` — one folder per game (`stick-duel`, `jigsaw`, `police-chase`, `circuit-builder`, `orbit-mechanics`, `element-rush`), each with its own `index.html`, `game.js`, `style.css`, and assets (`sounds/`, `images/`) where applicable.
+- `circuit-builder`, `orbit-mechanics`, `element-rush` are the STEM-education games (electricity/logic, orbital physics, and chemistry categorization respectively). They only use the shared platform app for progress (no per-game Firebase project/leaderboard).
 
 ## Firebase architecture (two layers — don't conflate them)
 
 1. **Platform app** (`platform.js`, root): a single named Firebase app (`"platform"`, project `game-arcade-platform`) shared by every page. Handles Google sign-in (`auth.js`) and per-user cross-game progress (`savePlatformProgress`, `addPlaytime`, `saveJigsawState`/`loadJigsawState`/`clearJigsawState`) stored under `users/{uid}`. It's initialized with an explicit app name specifically so it can coexist with each game's own default-named Firebase app on the same page.
-2. **Per-game app** (`games/<game>/firebase-config.js`, `stick-duel` and `police-chase` only): each of these games has its own separate Firebase *project* (different `projectId`/`apiKey` from the platform project and from each other), initialized as the default (unnamed) app, used solely for that game's top-3 `leaderboard.js` high-score list. `jigsaw` and the four STEM games have no separate project/leaderboard — they only use the platform app for saving progress (`savePlatformProgress("circuitBuilder"|"orbitMechanics"|"elementRush"|"codeRunner", ...)`); jigsaw's images are static local JPGs, not a live API.
+2. **Per-game app** (`games/<game>/firebase-config.js`, `stick-duel` and `police-chase` only): each of these games has its own separate Firebase *project* (different `projectId`/`apiKey` from the platform project and from each other), initialized as the default (unnamed) app, used solely for that game's top-3 `leaderboard.js` high-score list. `jigsaw` and the three STEM games have no separate project/leaderboard — they only use the platform app for saving progress (`savePlatformProgress("circuitBuilder"|"orbitMechanics"|"elementRush", ...)`); jigsaw's images are static local JPGs, not a live API.
 
 When touching leaderboard or cross-game progress code, be clear about which Firebase app/project you're writing to — `db` (per-game, in games with `firebase-config.js`) vs `platformDb` (shared, from `platform.js`).
 

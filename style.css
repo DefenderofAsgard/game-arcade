@@ -85,7 +85,7 @@ header {
 }
 
 h1 {
-  color: #8ecbff;
+  color: #39ff14;
 }
 
 .disclaimer {
@@ -112,12 +112,12 @@ h1 {
 
 .game-card:hover {
   background-color: rgba(255, 255, 255, 0.12);
-  border-color: #8ecbff;
+  border-color: #39ff14;
 }
 
 .game-card h2 {
   margin-top: 0;
-  color: #8ecbff;
+  color: #39ff14;
 }
 
 .game-card p {

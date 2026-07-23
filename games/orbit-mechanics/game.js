@@ -364,7 +364,7 @@ function drawRocket(x, y, dirX, dirY, flying) {
 
   ctx.beginPath();
   ctx.arc(ROCKET_LEN / 6, 0, 1.6, 0, Math.PI * 2);
-  ctx.fillStyle = "#8ecbff";
+  ctx.fillStyle = "#39ff14";
   ctx.fill();
 
   ctx.restore();

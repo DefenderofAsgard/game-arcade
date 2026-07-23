@@ -169,9 +169,9 @@ function isSolved(state) {
 function pieceSvg(piece) {
   switch (piece.type) {
     case "straight":
-      return '<svg viewBox="0 0 100 100"><line x1="50" y1="0" x2="50" y2="100" stroke="#8ecbff" stroke-width="12" stroke-linecap="round"/></svg>';
+      return '<svg viewBox="0 0 100 100"><line x1="50" y1="0" x2="50" y2="100" stroke="#39ff14" stroke-width="12" stroke-linecap="round"/></svg>';
     case "corner":
-      return '<svg viewBox="0 0 100 100"><path d="M50 0 L50 50 L100 50" stroke="#8ecbff" stroke-width="12" fill="none" stroke-linecap="round"/></svg>';
+      return '<svg viewBox="0 0 100 100"><path d="M50 0 L50 50 L100 50" stroke="#39ff14" stroke-width="12" fill="none" stroke-linecap="round"/></svg>';
     case "battery":
       return '<svg viewBox="0 0 100 100"><line x1="50" y1="0" x2="50" y2="50" stroke="#ffb347" stroke-width="12" stroke-linecap="round"/><circle cx="50" cy="50" r="18" fill="#ffb347"/><text x="50" y="57" font-size="20" text-anchor="middle" fill="#3a2200" font-family="Arial">B</text></svg>';
     case "bulb":

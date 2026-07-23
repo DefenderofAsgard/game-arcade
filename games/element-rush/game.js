@@ -192,7 +192,7 @@ function draw() {
     const binW = W / 3 - 16;
     const bx = lane.x - binW / 2;
     ctx.fillStyle = i === catcherLane ? "rgba(142, 203, 255, 0.18)" : "rgba(255, 255, 255, 0.05)";
-    ctx.strokeStyle = i === catcherLane ? "#8ecbff" : "#333";
+    ctx.strokeStyle = i === catcherLane ? "#39ff14" : "#333";
     ctx.lineWidth = 2;
     ctx.fillRect(bx, CATCH_LINE_Y, binW, H - CATCH_LINE_Y - 10);
     ctx.strokeRect(bx, CATCH_LINE_Y, binW, H - CATCH_LINE_Y - 10);
@@ -203,7 +203,7 @@ function draw() {
   });
 
   const activeLane = LANES[catcherLane];
-  ctx.fillStyle = "#8ecbff";
+  ctx.fillStyle = "#39ff14";
   ctx.beginPath();
   ctx.moveTo(activeLane.x - 22, CATCH_LINE_Y - 6);
   ctx.lineTo(activeLane.x + 22, CATCH_LINE_Y - 6);
@@ -213,7 +213,7 @@ function draw() {
 
   const tileSize = 46;
   ctx.fillStyle = "#3a4a63";
-  ctx.strokeStyle = "#8ecbff";
+  ctx.strokeStyle = "#39ff14";
   ctx.lineWidth = 2;
   ctx.fillRect(tile.x - tileSize / 2, tile.y - tileSize / 2, tileSize, tileSize);
   ctx.strokeRect(tile.x - tileSize / 2, tile.y - tileSize / 2, tileSize, tileSize);

@@ -11,7 +11,7 @@ body {
 .back-link {
   display: inline-block;
   margin-bottom: 10px;
-  color: #8ecbff;
+  color: #39ff14;
   text-decoration: none;
 }
 
@@ -20,7 +20,7 @@ body {
 }
 
 h1 {
-  color: #8ecbff;
+  color: #39ff14;
   margin-bottom: 5px;
 }
 
@@ -57,7 +57,7 @@ h1 {
 }
 
 .thumb-btn.selected {
-  border-color: #8ecbff;
+  border-color: #39ff14;
 }
 
 .diff-btn {
@@ -90,7 +90,7 @@ h1 {
 }
 
 #new-best {
-  color: #8ecbff;
+  color: #39ff14;
   font-weight: bold;
 }
 
@@ -115,7 +115,7 @@ h1 {
 }
 
 .board.solved {
-  border-color: #8ecbff;
+  border-color: #39ff14;
   box-shadow: 0 0 20px rgba(142, 203, 255, 0.6);
 }
 
@@ -145,7 +145,7 @@ h1 {
 }
 
 #win-message h2 {
-  color: #8ecbff;
+  color: #39ff14;
   margin-top: 0;
 }
 

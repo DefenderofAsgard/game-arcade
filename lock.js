@@ -9,8 +9,8 @@
   style.textContent =
     "body { visibility: hidden; }" +
     ".game-lock { visibility: visible; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; font-family: Arial, sans-serif; background-color: #000; color: #f0f0f0; padding: 40px 20px; box-sizing: border-box; }" +
-    ".game-lock h1 { color: #8ecbff; }" +
-    ".game-lock a { color: #8ecbff; margin-top: 20px; display: inline-block; }";
+    ".game-lock h1 { color: #39ff14; }" +
+    ".game-lock a { color: #39ff14; margin-top: 20px; display: inline-block; }";
   document.head.appendChild(style);
 
   document.addEventListener("DOMContentLoaded", function () {

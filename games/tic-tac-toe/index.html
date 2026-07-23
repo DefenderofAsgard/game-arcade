@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tic-Tac-Toe</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../../logo.css">
+  <script src="../../lock.js"></script>
+</head>
+<body>
+
+  <img class="brand-logo-corner" src="../../logo.svg" alt="Austin Simpson logo">
+
+  <a class="back-link" href="../../index.html">&larr; Back to Arcade</a>
+
+  <h1>Tic-Tac-Toe</h1>
+  <p class="instructions">Play a perfect-playing computer, or share a room code to play a friend online.</p>
+
+  <div id="mode-select">
+    <button class="mode-btn" id="mode-cpu-btn">Play vs Computer</button>
+    <button class="mode-btn" id="mode-online-btn">Play a Friend Online</button>
+  </div>
+
+  <div id="online-setup" hidden>
+    <button class="mode-btn" id="create-room-btn">Create Room</button>
+
+    <div id="waiting-room" hidden>
+      <p>Share this code with your friend:</p>
+      <div id="room-code-display"></div>
+      <div class="invite-row">
+        <button id="copy-link-btn" type="button">Copy Invite Link</button>
+        <a id="email-invite-link" href="#" class="invite-email-link">Invite via Email</a>
+      </div>
+      <p id="copy-confirm" class="copy-confirm" hidden>Link copied!</p>
+      <p class="waiting-text">Waiting for opponent to join&hellip;</p>
+    </div>
+
+    <div class="join-row">
+      <input id="join-code-input" maxlength="5" placeholder="Enter code" autocomplete="off">
+      <button id="join-room-btn">Join</button>
+    </div>
+
+    <p id="online-error" class="error-text" hidden></p>
+    <button class="back-btn" id="online-back-btn">&larr; Back</button>
+  </div>
+
+  <div id="game-screen" hidden>
+    <p id="status-line"></p>
+    <div id="board" class="board"></div>
+
+    <div id="result-banner" hidden>
+      <p id="result-text"></p>
+      <div class="session-over-actions">
+        <button id="play-again-btn">Play Again</button>
+        <button class="back-btn" id="menu-btn">Back to menu</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
+  <script src="../../platform.js"></script>
+  <script src="../shared/multiplayer.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>

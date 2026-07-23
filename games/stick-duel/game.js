@@ -536,7 +536,7 @@ function draw() {
     const progress = 1 - player.attackTimer / ATTACK_DURATION;
     swingAngle = player.swingStartFacing + (-0.9 + 1.8 * progress);
   }
-  drawStickFigure(player.x, player.y, player.facing, "#8ecbff", player.r, swingAngle, "#4fd6ff", player.walkPhase, player.isMoving, true);
+  drawStickFigure(player.x, player.y, player.facing, "#39ff14", player.r, swingAngle, "#4fd6ff", player.walkPhase, player.isMoving, true);
 }
 
 function loop() {

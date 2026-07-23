@@ -316,7 +316,7 @@ function drawPlayerCar(car) {
   ctx.translate(car.x, car.y);
   ctx.rotate(car.angle);
 
-  ctx.fillStyle = "#8ecbff";
+  ctx.fillStyle = "#39ff14";
   ctx.beginPath();
   ctx.moveTo(15, 0);
   ctx.lineTo(9, -6);

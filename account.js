@@ -56,8 +56,4 @@ platformAuth.onAuthStateChanged(async (user) => {
   const er = progress.elementRush || {};
   document.getElementById("er-best").textContent = er.bestScore ?? "—";
   document.getElementById("er-played").textContent = er.gamesPlayed ?? 0;
-
-  const cr = progress.codeRunner || {};
-  document.getElementById("cr-best").textContent = cr.bestScore ?? "—";
-  document.getElementById("cr-played").textContent = cr.gamesPlayed ?? 0;
 });

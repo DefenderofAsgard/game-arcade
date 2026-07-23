@@ -1,0 +1,417 @@
+body {
+  font-family: Arial, sans-serif;
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 30px 20px;
+  background-color: #000;
+  color: #f0f0f0;
+  text-align: center;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 10px;
+  color: #39ff14;
+  text-decoration: none;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+h1 {
+  color: #39ff14;
+  margin-bottom: 5px;
+}
+
+.instructions {
+  color: #999;
+  font-size: 0.9em;
+  margin-top: 0;
+}
+
+#mode-select,
+#online-setup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  margin: 30px auto;
+  max-width: 360px;
+}
+
+#online-setup {
+  max-width: 480px;
+}
+
+#online-choice {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+button {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 5px;
+  background-color: #2b6cb0;
+  color: #fff;
+  cursor: pointer;
+  font-size: 1em;
+  font-family: inherit;
+}
+
+button:hover {
+  background-color: #235a92;
+}
+
+button:disabled {
+  background-color: #555;
+  cursor: not-allowed;
+}
+
+.link-btn {
+  background: none;
+  color: #39ff14;
+  padding: 4px;
+  font-size: 0.9em;
+  text-decoration: underline;
+}
+
+.link-btn:hover {
+  background: none;
+  color: #b7dcff;
+}
+
+.join-form {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+#join-code-input {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #555;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #222;
+  width: 100px;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 1em;
+}
+
+#room-info {
+  background-color: rgba(255, 255, 255, 0.06);
+  border: 1px solid #333;
+  border-radius: 10px;
+  padding: 16px 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#room-code-display {
+  color: #ffe28a;
+  font-size: 1.3em;
+  letter-spacing: 2px;
+}
+
+.invite-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+#email-invite-link {
+  color: #39ff14;
+  text-decoration: none;
+  padding: 10px 18px;
+  border: 1px solid #2b6cb0;
+  border-radius: 5px;
+}
+
+#email-invite-link:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.fallback-link {
+  font-size: 0.8em;
+  color: #999;
+  word-break: break-all;
+}
+
+.status-text {
+  color: #999;
+  font-size: 0.9em;
+}
+
+.error-text {
+  color: #ff8080;
+  font-weight: bold;
+}
+
+.hud {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  font-size: 1.1em;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+#side-label {
+  color: #39ff14;
+  font-weight: bold;
+}
+
+#turn-indicator {
+  color: #ffe28a;
+  font-weight: bold;
+}
+
+#cpu-thinking {
+  color: #999;
+  font-style: italic;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  width: 480px;
+  height: 480px;
+  margin: 0 auto;
+  border: 2px solid #333;
+  border-radius: 8px;
+  overflow: hidden;
+  max-width: 100%;
+  aspect-ratio: 1 / 1;
+
+  /* Board theme + piece style defaults ("classic"). Overridden per-theme
+     below; see customize.html, which is the only other place these class
+     names (theme-*, pieces-*) are referenced. */
+  --sq-light: #d9d9d9;
+  --sq-dark: #555b6e;
+  --piece-white-color: #fff;
+  --piece-white-glow: #000;
+  --piece-black-color: #111;
+  --piece-black-glow: rgba(255, 255, 255, 0.35);
+}
+
+.square {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.2em;
+  line-height: 1;
+  cursor: pointer;
+  user-select: none;
+  border: none;
+  padding: 0;
+}
+
+.square.light {
+  background-color: var(--sq-light);
+}
+
+.square.dark {
+  background-color: var(--sq-dark);
+}
+
+.square .piece-white {
+  color: var(--piece-white-color);
+  text-shadow: 0 0 2px var(--piece-white-glow), 0 0 3px var(--piece-white-glow);
+}
+
+.square .piece-black {
+  color: var(--piece-black-color);
+  /* Faint glow on every piece style (not just "classic") so black pieces
+     stay legible even on themes with a very dark "dark" square. */
+  text-shadow: 0 0 2px var(--piece-black-glow);
+}
+
+/* ---- Board themes ---- */
+
+.board.theme-wood {
+  --sq-light: #f0d9b5;
+  --sq-dark: #b58863;
+}
+
+.board.theme-emerald {
+  --sq-light: #eeeed2;
+  --sq-dark: #769656;
+}
+
+.board.theme-neon {
+  --sq-light: #24321f;
+  --sq-dark: #0c140a;
+  border-color: #39ff14;
+}
+
+.board.theme-ice {
+  --sq-light: #e8f1f8;
+  --sq-dark: #7ea8c4;
+}
+
+/* ---- Piece styles (color the same Unicode glyphs differently) ---- */
+
+.board.pieces-crimson {
+  --piece-white-color: #ffe9c7;
+  --piece-white-glow: #7a2318;
+  --piece-black-color: #a3162c;
+  --piece-black-glow: rgba(255, 233, 199, 0.45);
+}
+
+.board.pieces-royal {
+  --piece-white-color: #f5e6c8;
+  --piece-white-glow: #4b2e83;
+  --piece-black-color: #3b1f5c;
+  --piece-black-glow: rgba(245, 230, 200, 0.45);
+}
+
+.board.pieces-glow {
+  --piece-white-color: #39ff14;
+  --piece-white-glow: #1a6b0a;
+  --piece-black-color: #00c8ff;
+  --piece-black-glow: #005f7a;
+}
+
+/* ---- customize.html: swatch pickers + live preview ---- */
+
+.customize-section {
+  margin: 26px auto;
+  max-width: 640px;
+}
+
+.customize-section h2 {
+  color: #39ff14;
+  font-size: 1.1em;
+  margin-bottom: 12px;
+}
+
+.swatch-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  justify-content: center;
+}
+
+.swatch-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background-color: rgba(255, 255, 255, 0.06);
+  border: 2px solid #333;
+  border-radius: 10px;
+  padding: 10px;
+  cursor: pointer;
+  color: #ccc;
+  font-size: 0.85em;
+  font-family: inherit;
+  width: 100px;
+}
+
+.swatch-btn:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+.swatch-btn.selected {
+  border-color: #39ff14;
+  color: #39ff14;
+}
+
+.mini-board {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  width: 72px;
+  height: 72px;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #333;
+}
+
+.mini-board .sq.light {
+  background-color: var(--sq-light);
+}
+
+.mini-board .sq.dark {
+  background-color: var(--sq-dark);
+}
+
+.mini-pieces {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 72px;
+  font-size: 1.8em;
+  line-height: 1;
+}
+
+.mini-pieces .piece-white {
+  color: var(--piece-white-color);
+  text-shadow: 0 0 2px var(--piece-white-glow), 0 0 3px var(--piece-white-glow);
+}
+
+.mini-pieces .piece-black {
+  color: var(--piece-black-color);
+  text-shadow: 0 0 2px var(--piece-black-glow);
+}
+
+.board.preview-board-el {
+  width: 320px;
+  height: 320px;
+}
+
+.square.selected {
+  outline: 3px solid #39ff14;
+  outline-offset: -3px;
+}
+
+.square.legal-move {
+  box-shadow: inset 0 0 0 4px rgba(142, 203, 255, 0.7);
+}
+
+.square.last-move {
+  box-shadow: inset 0 0 0 9999px rgba(255, 214, 10, 0.35);
+}
+
+.square:disabled {
+  cursor: default;
+}
+
+#result-banner {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+  background-color: #111;
+  border: 1px solid #333;
+  border-radius: 10px;
+  padding: 20px;
+  max-width: 300px;
+  width: 90%;
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.75);
+}
+
+#result-banner h2 {
+  color: #39ff14;
+  margin-top: 0;
+}
+
+.session-over-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
