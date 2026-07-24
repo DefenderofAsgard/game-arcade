@@ -110,6 +110,9 @@ window.addEventListener("keydown", (e) => {
     catcherLane = 1;
   } else if (e.key === "3") {
     catcherLane = 2;
+  } else if (e.key === "Enter") {
+    resolveCatch();
+    e.preventDefault();
   }
 });
 
