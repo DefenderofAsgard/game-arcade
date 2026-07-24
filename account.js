@@ -8,6 +8,10 @@ function formatDuration(totalSeconds) {
   return `${sec}s`;
 }
 
+function capitalize(word) {
+  return word ? word[0].toUpperCase() + word.slice(1) : "—";
+}
+
 platformAuth.onAuthStateChanged(async (user) => {
   if (!user) {
     window.location.href = "index.html";
@@ -56,4 +60,16 @@ platformAuth.onAuthStateChanged(async (user) => {
   const er = progress.elementRush || {};
   document.getElementById("er-best").textContent = er.bestScore ?? "—";
   document.getElementById("er-played").textContent = er.gamesPlayed ?? 0;
+
+  const ttt = progress.ticTacToe || {};
+  document.getElementById("ttt-result").textContent = capitalize(ttt.result);
+  document.getElementById("ttt-played").textContent = ttt.gamesPlayed ?? 0;
+
+  const ck = progress.checkers || {};
+  document.getElementById("ck-result").textContent = capitalize(ck.result);
+  document.getElementById("ck-played").textContent = ck.gamesPlayed ?? 0;
+
+  const ch = progress.chess || {};
+  document.getElementById("ch-result").textContent = capitalize(ch.result);
+  document.getElementById("ch-played").textContent = ch.gamesPlayed ?? 0;
 });

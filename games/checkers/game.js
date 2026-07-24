@@ -428,12 +428,15 @@ function init() {
       gameOver = data.status === "finished";
       selected = null;
       if (data.status === "waiting") {
+        roomInfoEl.hidden = false;
         roomCodeTextEl.textContent = "Room code: " + roomId + " — share it with your friend. Waiting for them to join...";
         if (mySlot === "p1") showInvite(roomId);
         else hideInvite();
       } else {
+        // Game is active (or finished) — the room code / invite UI has done
+        // its job, so hide the whole panel instead of just the buttons.
         hideInvite();
-        if (!gameOver) roomCodeTextEl.textContent = "Room code: " + roomId;
+        roomInfoEl.hidden = true;
       }
       if (gameOver && data.winner) {
         const iWon = data.winner === mySlot;

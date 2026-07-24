@@ -35,6 +35,8 @@ function planetForLevel(levelNum) {
 
 const levelEl = document.getElementById("level");
 const planetNameEl = document.getElementById("planet-name");
+const gravityValueEl = document.getElementById("gravity-value");
+const EARTH_SURFACE_GRAVITY_MS2 = 9.8;
 const scoreEl = document.getElementById("score");
 const bestScoreEl = document.getElementById("best-score");
 const newBestEl = document.getElementById("new-best");
@@ -128,6 +130,8 @@ function updateHud() {
   levelEl.textContent = state.level;
   scoreEl.textContent = state.score;
   planetNameEl.textContent = state.planet.name;
+  const gravityMs2 = (state.planet.gravity * EARTH_SURFACE_GRAVITY_MS2).toFixed(1);
+  gravityValueEl.textContent = `${state.planet.gravity.toFixed(2)}× Earth (${gravityMs2} m/s²)`;
   attemptsLeftEl.textContent = state.attemptsLeft;
   decisionTimerEl.textContent = `${Math.ceil(state.decisionTimeLeft)}s`;
 }
